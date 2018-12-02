@@ -30,18 +30,13 @@ defmodule Day01 do
   end
 end
 
-ExUnit.start()
+Code.require_file("test_helper.exs")
 
 defmodule Day01Test do
   use ExUnit.Case, async: true
+  import TestHelper
 
   @input_file "day01.input"
-
-  def parse(file) do
-    File.read!(file)
-    |> String.split
-    |> Enum.map(&String.to_integer/1)
-  end
 
   describe "part 1" do
     test "+1, -2, +3, +1" do
