@@ -56,7 +56,7 @@ defmodule Day01Test do
     end
 
     test "answer" do
-      answer = parse(@input_file)
+      answer = parse_integers(@input_file)
       |> Day01.final_frequency
       # |> IO.inspect(label: "Part 1 Answer")
       assert answer == 406
@@ -85,7 +85,7 @@ defmodule Day01Test do
     end
 
     test "answer" do
-      answer = parse(@input_file)
+      answer = parse_integers(@input_file)
       |> Day01.first_duplicate
       # |> IO.inspect(label: "Part 2 Answer")
       assert answer == 312

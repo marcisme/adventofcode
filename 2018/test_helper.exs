@@ -2,8 +2,14 @@ ExUnit.start()
 
 defmodule TestHelper do
   def parse(file) do
-    File.read!(file)
+    file
+    |> File.read!
     |> String.split
+  end
+
+  def parse_integers(file) do
+    file
+    |> parse
     |> Enum.map(&String.to_integer/1)
   end
 end
