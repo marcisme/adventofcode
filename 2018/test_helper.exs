@@ -4,7 +4,7 @@ defmodule TestHelper do
   def parse(file) do
     file
     |> File.read!
-    |> String.split
+    |> String.split("\n", trim: true)
   end
 
   def parse_integers(file) do
