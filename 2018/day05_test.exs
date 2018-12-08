@@ -1,7 +1,11 @@
 defmodule Day05 do
-  def num_remaining_units(polymer) do
+  def num_remaining_units(polymer) when is_binary(polymer) do
     polymer
     |> String.graphemes
+    |> num_remaining_units
+  end
+  def num_remaining_units(graphemes) do
+    graphemes
     |> Enum.reduce([], &react/2)
     |> Enum.count
   end
@@ -26,6 +30,23 @@ defmodule Day05 do
       # ab
       true -> false
     end
+  end
+
+  def find_shortest(polymer) do
+    graphemes = String.graphemes(polymer)
+    97..122
+    |> Enum.map(&(IO.chardata_to_string([&1])))
+    |> Enum.reduce(0, fn unit, shortest ->
+      count =
+        graphemes
+        |> Enum.reject(&(&1 == unit || &1 == String.upcase(unit)))
+        |> num_remaining_units
+      cond do
+        shortest == 0 -> count
+        count < shortest -> count
+        true -> shortest
+      end
+    end)
   end
 end
 
@@ -85,5 +106,13 @@ defmodule Day05Test do
   end
 
   describe "part 2" do
+    test "dabAcCaCBAcCcaDA" do
+      assert Day05.find_shortest("dabAcCaCBAcCcaDA") == 4
+    end
+
+    test "answer" do
+      answer = parse(@input_file) |> List.first |> Day05.find_shortest
+      assert answer == 6872
+    end
   end
 end
