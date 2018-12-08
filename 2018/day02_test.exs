@@ -18,6 +18,42 @@ defmodule Day02 do
       end)
     twices * thrices
   end
+
+  def common_letters([]), do: nil
+  def common_letters(ids) do
+    if match = find_match(ids) do
+      match
+    else
+      ids |> tl |> common_letters
+    end
+  end
+
+  defp find_match([]), do: nil
+  defp find_match([_id | []]), do: nil
+  defp find_match([id | [candidate | rest]]) do
+    if match = compare(id, candidate) do
+      match
+    else
+      find_match([id | rest])
+    end
+  end
+
+  defp compare(a, b) do
+    length = String.length(a)
+    possible_match =
+      Enum.reduce(0..length-1, "", fn index, common ->
+        left = String.at(a, index)
+        right = String.at(b, index)
+        if left == right do
+          common <> left
+        else
+          common
+        end
+      end)
+    if String.length(possible_match) == length - 1 do
+      possible_match
+    end
+  end
 end
 
 Code.require_file("test_helper.exs")
@@ -64,5 +100,21 @@ defmodule Day02Test do
   end
 
   describe "part 2" do
+    test "test list" do
+      assert Day02.common_letters(~W(
+        abcde
+        fghij
+        klmno
+        pqrst
+        fguij
+        axcye
+        wvxyz
+      )) == "fgij"
+    end
+
+    test "answer" do
+      answer = parse(@input_file) |> Day02.common_letters
+      assert answer == "pbykrmjmizwhxlqnasfgtycdv"
+    end
   end
 end
